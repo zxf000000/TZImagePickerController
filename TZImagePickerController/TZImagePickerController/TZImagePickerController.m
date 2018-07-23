@@ -225,12 +225,13 @@
         __weak typeof(self) weakSelf = self;
         [previewVc setDoneButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            [strongSelf dismissViewControllerAnimated:YES completion:^{
+            // 注释掉dissmiss的代码.
+//            [strongSelf dismissViewControllerAnimated:YES completion:^{
                 if (!strongSelf) return;
                 if (strongSelf.didFinishPickingPhotosHandle) {
                     strongSelf.didFinishPickingPhotosHandle(photos,assets,isSelectOriginalPhoto);
                 }
-            }];
+//            }];
         }];
     }
     return self;
