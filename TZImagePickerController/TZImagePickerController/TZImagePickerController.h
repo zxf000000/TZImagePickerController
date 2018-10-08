@@ -181,6 +181,8 @@
 @property (nonatomic, copy) void (^assetCellDidLayoutSubviewsBlock)(TZAssetCell *cell, UIImageView *imageView, UIImageView *selectImageView, UILabel *indexLabel, UIView *bottomView, UILabel *timeLength, UIImageView *videoImgView);
 @property (nonatomic, copy) void (^albumCellDidLayoutSubviewsBlock)(TZAlbumCell *cell, UIImageView *posterImageView, UILabel *titleLabel);
 
+
+
 #pragma mark -
 - (id)showAlertWithTitle:(NSString *)title;
 - (void)hideAlertView:(id)alertView;
@@ -242,6 +244,11 @@
 @property (nonatomic, copy) void (^didFinishPickingPhotosHandle)(NSArray<UIImage *> *photos,NSArray *assets,BOOL isSelectOriginalPhoto);
 @property (nonatomic, copy) void (^didFinishPickingPhotosWithInfosHandle)(NSArray<UIImage *> *photos,NSArray *assets,BOOL isSelectOriginalPhoto,NSArray<NSDictionary *> *infos);
 @property (nonatomic, copy) void (^imagePickerControllerDidCancelHandle)(void);
+
+
+#pragma mark - edit
+@property (nonatomic, copy) void (^didFinishEditPickingPhotosHandle)(NSArray<UIImage *> *photos,NSArray *assets,BOOL isSelectOriginalPhoto, TZImagePickerController *picker);
+
 
 // If user picking a video, this handle will be called.
 // If system version > iOS8,asset is kind of PHAsset class, else is ALAsset class.

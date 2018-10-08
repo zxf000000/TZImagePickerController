@@ -27,6 +27,8 @@
     
     UIView *_toolBar;
     UIButton *_doneButton;
+    UIButton *_editButton;
+
     UIImageView *_numberImageView;
     UILabel *_numberLabel;
     UIButton *_originalPhotoButton;
@@ -160,6 +162,11 @@
     [_doneButton setTitle:_tzImagePickerVc.doneBtnTitleStr forState:UIControlStateNormal];
     [_doneButton setTitleColor:_tzImagePickerVc.oKButtonTitleColorNormal forState:UIControlStateNormal];
     
+    _editButton = [[UIButton alloc] init];
+    [_editButton setTitle:@"编辑" forState:(UIControlStateNormal)];
+    [_editButton addTarget:self action:@selector(editButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     _numberImageView = [[UIImageView alloc] initWithImage:_tzImagePickerVc.photoNumberIconImage];
     _numberImageView.backgroundColor = [UIColor clearColor];
     _numberImageView.clipsToBounds = YES;
@@ -179,6 +186,7 @@
     [_toolBar addSubview:_originalPhotoButton];
     [_toolBar addSubview:_numberImageView];
     [_toolBar addSubview:_numberLabel];
+    [_toolBar addSubview:_editButton];
     [self.view addSubview:_toolBar];
     
     if (_tzImagePickerVc.photoPreviewPageUIConfigBlock) {
@@ -276,6 +284,8 @@
     _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12, 0, _doneButton.tz_width, 44);
     _numberImageView.frame = CGRectMake(_doneButton.tz_left - 24 - 5, 10, 24, 24);
     _numberLabel.frame = _numberImageView.frame;
+    
+    _editButton.frame =  CGRectMake((self.view.tz_width - _editButton.tz_width)/2, 0, _doneButton.tz_width, 44);
     
     [self configCropView];
     
@@ -501,6 +511,8 @@
     }
 }
 
+
+
 #pragma mark - Private Method
 
 - (void)dealloc {
@@ -567,6 +579,32 @@
     [[TZImageManager manager] getPhotosBytesWithArray:@[_models[_currentIndex]] completion:^(NSString *totalBytes) {
         self->_originalPhotoLabel.text = [NSString stringWithFormat:@"(%@)",totalBytes];
     }];
+}
+
+#pragma mark - 编辑按钮
+- (void)editButtonClick {
+    
+    TZImagePickerController *_tzImagePickerVc = (TZImagePickerController *)self.navigationController;
+    // 如果图片正在从iCloud同步中,提醒用户
+    if (_progress > 0 && _progress < 1 && (_selectButton.isSelected || !_tzImagePickerVc.selectedModels.count )) {
+        _alertView = [_tzImagePickerVc showAlertWithTitle:[NSBundle tz_localizedStringForKey:@"Synchronizing photos from iCloud"]];
+        return;
+    }
+    
+    [_tzImagePickerVc.selectedModels removeAllObjects];
+    TZAssetModel *model = _models[_currentIndex];
+    [_tzImagePickerVc.selectedModels addObject:model];
+    
+//    UIViewController *vc = [[UIViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    
+    NSLog(@"%@0--",self.editButtonClickBlockWithPreviewType);
+    
+    if (self.editButtonClickBlockWithPreviewType) {
+       
+        self.editButtonClickBlockWithPreviewType(self.photos, _tzImagePickerVc.selectedAssets, self.isSelectOriginalPhoto);
+    }
+    
 }
 
 @end

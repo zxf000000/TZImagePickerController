@@ -350,6 +350,13 @@
         
     }];
     
+    [imagePickerVc setDidFinishEditPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto, TZImagePickerController *picker) {
+       
+        UIViewController *controller = [[UIViewController alloc] init];
+        [picker pushViewController:controller animated:YES];
+        
+    }];
+    
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 }
 

@@ -225,14 +225,27 @@
         __weak typeof(self) weakSelf = self;
         [previewVc setDoneButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            // 注释掉dissmiss的代码.
-//            [strongSelf dismissViewControllerAnimated:YES completion:^{
+            
+            NSLog(@"初始化");
+            
+            [strongSelf dismissViewControllerAnimated:YES completion:^{
                 if (!strongSelf) return;
                 if (strongSelf.didFinishPickingPhotosHandle) {
-                    strongSelf.didFinishPickingPhotosHandle(photos,assets,isSelectOriginalPhoto);
+                strongSelf.didFinishPickingPhotosHandle(photos,assets,isSelectOriginalPhoto);
                 }
-//            }];
+            }];
+            
         }];
+        
+        [previewVc setEditButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            if (!strongSelf) return;
+            
+            if (strongSelf.didFinishEditPickingPhotosHandle) {
+                strongSelf.didFinishEditPickingPhotosHandle(photos, assets, isSelectOriginalPhoto, self);
+            }
+        }];
+        
     }
     return self;
 }
